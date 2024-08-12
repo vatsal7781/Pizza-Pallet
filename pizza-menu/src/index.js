@@ -47,11 +47,74 @@ const pizzaData = [
   },
 ];
 
+function Header() {
+  // const style = { color: 'red', fontSize: '48px', textTransform: 'uppercase' }
+  const style = {}
+  return (
+    <div className='header' >
+      <h1 style={style}>
+        Pizza Pallet
+      </h1>
+    </div>)
+}
+
+
+function Menu() {
+  return (
+    <main className='menu'>
+      <h2>Our Menu</h2>
+      <Pizza name="Pizza Spinaci"
+        photoName="pizzas/spinaci.jpg"
+        ingredients="Tomato, Mozarella, Mushrooms, Olives"
+        price={10}
+      />
+      <Pizza name="Pizza Funghi"
+        ingredients="Tomato, Hemp, Mushrooms, Olives"
+        price={12}
+        photoName="pizzas/funghi.jpg"
+      />
+    </main>
+  )
+}
+
+function Pizza(props) {
+  return (
+    <div className='pizza'>
+      <img src={props.photoName} alt={props.name} />
+      <div>
+
+        <h3>{props.name}</h3>
+        <p>{props.ingredients}</p>
+        <span>{props.price}</span>
+      </div>
+    </div>
+  )
+}
+
+
+
+
+function Footer() {
+  const hour = new Date().getHours()
+  const openHour = 12
+  const closeHour = 22
+  let status = hour >= openHour && hour < closeHour ? 'Open' : 'Closed'
+
+  return (
+    <footer className='footer'>
+      {new Date().toLocaleTimeString()} We're Currently {status}
+    </footer>
+  )
+}
+
+
 
 
 function App() {
   return (<div>
-    <h1>Hello</h1>
+    <Header />
+    <Menu />
+    <Footer />
   </div>)
 }
 
