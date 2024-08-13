@@ -60,58 +60,97 @@ function Header() {
 
 
 function Menu() {
+  const pizzas = pizzaData
+  // const pizzas = []
+  const numPizzas = pizzas.length
+
+
   return (
     <main className='menu'>
       <h2>Our Menu</h2>
-      <Pizza name="Pizza Spinaci"
-        photoName="pizzas/spinaci.jpg"
-        ingredients="Tomato, Mozarella, Mushrooms, Olives"
-        price={10}
-      />
-      <Pizza name="Pizza Funghi"
-        ingredients="Tomato, Hemp, Mushrooms, Olives"
-        price={12}
-        photoName="pizzas/funghi.jpg"
-      />
+
+
+      {numPizzas > 0 ? (
+        <>
+
+          <p>
+            Authentic Italian cuisine. 6 creative dishes to choose from. All
+            from our stone oven, all organic, all delicious.
+          </p>
+
+          <ul className='pizzas'>
+            {pizzas.map(pizza => <Pizza pizzaObj={pizza} key={pizza.name} />)}
+          </ul>
+        </>
+      ) : <p>We're working on our Menu pls come back later :)</p>}
+
+
+      {/* {pizzaData.map(item => <Pizza name={item.name} price={item.price} soldOut={item.soldOut} photoName={item.photoName} ingredients={item.ingredients} />)}  */}
+      {/* We can do it like this. But this is an uncnventional way of doing the task.  */}
+      {/* we usually pass the whole object to the more specific component(as this is a parent component and main specific component is the Pizza component) */}
     </main>
   )
 }
 
-function Pizza(props) {
-  return (
-    <div className='pizza'>
-      <img src={props.photoName} alt={props.name} />
-      <div>
+function Pizza({ pizzaObj }) {
 
-        <h3>{props.name}</h3>
-        <p>{props.ingredients}</p>
-        <span>{props.price}</span>
+  // if (pizzaObj.soldOut) return null
+
+  return (
+    <li className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
+      <img src={pizzaObj.photoName} alt={pizzaObj.name} />
+      <div>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        {/* conditionally rendering elements */}
+        {/* {pizzaObj.soldOut ? <span>SOLD OUT</span> : <span>{pizzaObj.price}</span>} */}
+
+        {/* conditionally rendering content inside an element */}
+        <span>{pizzaObj.soldOut ? 'SOLD OUT' : pizzaObj.price}</span>
       </div>
-    </div>
+    </li>
   )
 }
-
-
-
 
 function Footer() {
   const hour = new Date().getHours()
-  const openHour = 12
+  const openHour = 11
   const closeHour = 22
-  let status = hour >= openHour && hour < closeHour ? 'Open' : 'Closed'
+  // let status = hour >= openHour && hour < closeHour ? 'Open' : 'Closed'
+  let isOpen = hour >= openHour && hour < closeHour;
 
   return (
     <footer className='footer'>
-      {new Date().toLocaleTimeString()} We're Currently {status}
-    </footer>
+      {isOpen ?
+        <Order openHour={openHour} closeHour={closeHour} /> : (
+          <div className='order'>
+            <p>Sorry! We're closed now. We'll serve you again tommorow at {openHour}:00 hours.</p>
+            <p> You can visit us or order online</p>
+          </div >)
+      }
+
+      {/* {new Date().toLocaleTimeString()}  Currently {isOpen ? "" : "closed"} */}
+    </footer >
   )
+
+  // return (
+  //   <footer className='footer'>
+  //     {new Date().toLocaleTimeString()} We're Currently {status}
+  //   </footer>
+  // )
+}
+
+function Order({ openHour, closeHour }) {
+  return (
+    <div className='order'>
+      <p>We're open from {openHour}:00 hours until {closeHour}:00 hours. Visit us or order online</p>
+      <button className='btn'>Order Now</button>
+    </div>)
 }
 
 
-
-
 function App() {
-  return (<div>
+  return (<div className="container">
     <Header />
     <Menu />
     <Footer />
